@@ -12,6 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Toolkit;
 import java.awt.Font;
+import javax.swing.BorderFactory;
+import java.awt.Color;
+import javax.swing.border.BevelBorder;
 
 public class PantallaPrincipal extends JFrame {
 
@@ -38,7 +41,7 @@ public class PantallaPrincipal extends JFrame {
 		this.setFont(new Font("Dialog", Font.PLAIN, 12));
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Imagenes/logoTF.jpg")));
 		this.setContentPane(getJContentPane());
-		this.setTitle("Carga de Formularios");
+		this.setTitle("Pcl Forms a Printer UTP");
 		
 
 		
@@ -50,6 +53,10 @@ public class PantallaPrincipal extends JFrame {
 		          
 		           
 		        }
+		        PrintService service = PrintServiceLookup.lookupDefaultPrintService();
+		        jComboBoxImpresora.setSelectedItem(service.getName());//Default printer!!!
+		       
+
 		
 		}
 
@@ -64,6 +71,8 @@ public class PantallaPrincipal extends JFrame {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
 			jContentPane.setLayout(null);
+			jContentPane.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			jContentPane.setBackground(new Color(153, 153, 255));
 			jContentPane.add(getJComboBoxImpresora(), null);
 			jContentPane.add(getJButtonCargar(), null);
 		}
@@ -78,7 +87,7 @@ public class PantallaPrincipal extends JFrame {
 	private JComboBox<String> getJComboBoxImpresora() {
 		if (jComboBoxImpresora == null) {
 			jComboBoxImpresora = new JComboBox<String>();
-			jComboBoxImpresora.setBounds(new Rectangle(16, 16, 240, 36));
+			jComboBoxImpresora.setBounds(new Rectangle(30, 16, 218, 25));
 		}
 		return jComboBoxImpresora;
 	}
@@ -91,7 +100,7 @@ public class PantallaPrincipal extends JFrame {
 	private JButton getJButtonCargar() {
 		if (jButtonCargar == null) {
 			jButtonCargar = new JButton();
-			jButtonCargar.setBounds(new Rectangle(25, 85, 218, 45));
+			jButtonCargar.setBounds(new Rectangle(30, 87, 218, 31));
 			jButtonCargar.setText("Cargar Formularios");
 			jButtonCargar.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -124,14 +133,17 @@ public class PantallaPrincipal extends JFrame {
 						
 					}//fin if
 					else{
-					
-					 ip=ip.replaceAll("_","");
-		             String ruta=".\\src\\FormsPrint\\lpr.exe -S "+ip+" -Praw -o l .\\src\\FormsPrint\\FORMULARIOS.ram";
+					if(ip.contains("_")){//si tiene guión volálo
+					 ip=ip.substring(0, ip.indexOf("_"));
+					}
+		            
+					 System.out.println(ip);
+					 String ruta=".\\src\\FormsPrint\\lpr.exe -S "+ip+" -Praw -o l .\\src\\FormsPrint\\FORMULARIOS.ram";
 		             try {
 		            	
 						rt.exec(ruta);
 						
-						JOptionPane.showMessageDialog(null," datos en "+printer+" Puerto "+ip);
+						JOptionPane.showMessageDialog(null,"Datos cargados en "+printer+" Puerto "+ip);
 						
 						
 					} catch (IOException e1) {
