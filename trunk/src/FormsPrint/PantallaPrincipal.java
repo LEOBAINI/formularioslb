@@ -98,27 +98,47 @@ public class PantallaPrincipal extends JFrame {
 					String printer=jComboBoxImpresora.getSelectedItem().toString();
 					String ip=null;
 					ip=LeeRegistro.leer(printer);
-					
-					
-					/*
-					 * 
-						net use lpt2: /del
-						net use lpt2 \\fur1204\Norberto /yes
-						copy /b forms2012.ram lpt2
-					 */
-					//
-					
-					System.out.println(ip);
 					Runtime rt = Runtime.getRuntime();
+					
+					
+					if(printer.contains("\\")){//si tiene barra es printer de red compartida
+					
+					 
+						String com1="net use lpt2: /del";
+						String com2="net use lpt2 "+printer+" /yes";
+						String com3="cmd copy /b .\\src\\FormsPrint\\FORMULARIOS.ram lpt2";
+						
+						
+					
+						try {
+							rt.exec(com1);
+							rt.exec(com2);
+							rt.exec(com3);
+							JOptionPane.showMessageDialog(null,"Enviando datos en "+printer+" Puerto LPT2, Impresora por USB");
+							
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null,"Error al cargar! "+e1.getMessage());
+							
+						}
+						
+					}//fin if
+					else{
+					
+					 ip=ip.replaceAll("_","");
 		             String ruta=".\\src\\FormsPrint\\lpr.exe -S "+ip+" -Praw -o l .\\src\\FormsPrint\\FORMULARIOS.ram";
 		             try {
 		            	
 						rt.exec(ruta);
 						
-						JOptionPane.showMessageDialog(null,"Cargando datos en "+printer+" Puerto "+ip);
+						JOptionPane.showMessageDialog(null," datos en "+printer+" Puerto "+ip);
+						
+						
 					} catch (IOException e1) {
-						JOptionPane.showMessageDialog(null,"Error "+e1.getMessage());
+						JOptionPane.showMessageDialog(null,"Error al cargar "+e1.getMessage());
 					}
+					
+					}//fin else
 					
 				}
 			});
