@@ -115,7 +115,7 @@ public class PantallaPrincipal extends JFrame {
 					 
 						String com1="net use lpt2: /del";
 						String com2="net use lpt2 "+printer+" /yes";
-						String com3="cmd copy /b .\\src\\FormsPrint\\FORMULARIOS.ram lpt2";
+						String com3="cmd copy /b .\\FORMULARIOS.ram lpt2";
 						
 						
 					
@@ -138,7 +138,7 @@ public class PantallaPrincipal extends JFrame {
 					}
 		            
 					 System.out.println(ip);
-					 String ruta=".\\src\\FormsPrint\\lpr.exe -S "+ip+" -Praw -o l .\\src\\FormsPrint\\FORMULARIOS.ram";
+					 String ruta=".\\lpr.exe -S "+ip+" -Praw -o l .\\FORMULARIOS.ram";
 		             try {
 		            	
 						rt.exec(ruta);
